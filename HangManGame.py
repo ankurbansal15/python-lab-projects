@@ -31,6 +31,8 @@ for i in range(1,11):
             missted_word = missted_word.replace(i,"_")
         print(missted_word)
         print("Congrulations, Your Letter is Matched")
+        if(missted_word == word):
+            break
     else:
         print("Sorry, Your Letter is wrong, Chances Left:", 10-i)
 if(missted_word == word):
