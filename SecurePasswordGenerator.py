@@ -1,19 +1,10 @@
-import random
-import string
-length = random.randint(8,12)
-part = length//4
-left = length%4
-lower = ''.join((random.choice(string.ascii_lowercase) for x in range(part)))
-uppar = ''.join((random.choice(string.ascii_uppercase) for x in range(part)))
-nums = ''.join((random.choice(string.digits) for x in range(part)))
-if(left == 0):
-   chrs = ''.join((random.choice(string.punctuation) for x in range(part)))
-else:
-   chrs = ''.join((random.choice(string.punctuation) for x in range(left)))
-password = lower + uppar + nums + chrs
-temp = list(password)
-random.shuffle(temp)
-password = ''
-for i in temp:
-   password += i
-print("The Generated Password is " + password)
+from random import choices,sample
+t = input("Enter 'Y' to generate password\n")
+if t.lower() == "y":
+    alphaU = list(range(65,91))
+    alphaL = list(range(97,123))
+    num = list(range(48,58))
+    sym = list(range(33,48))+[64]
+    passwd = list(map(chr,(choices(alphaU,k=3)+choices(alphaL,k=3)+choices(num,k=3)+choices(sym,k=3))))
+    print("".join(sample(passwd,k=12)))
+input("Enter to exit program.")

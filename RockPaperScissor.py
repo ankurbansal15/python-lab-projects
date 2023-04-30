@@ -1,42 +1,14 @@
-# Rock, paper or scissor game.
-import random
-options=["rock","paper","scissor"]
-while(True):
-    user=input("Choose rock, paper, or scissor: ")
-    print('\n')
-    computer=random.choice(options)
-    print("You choose:",user)
-    print("Computer choose:",computer)
-    if user==computer:
-        print('\n')
-        print("It's a tie!")
-    elif user=="rock":
-        if computer=="paper":
-            print('\n')
-            print("You lose!")
-            break
-        else:
-            print('\n')
-            print("You win!")
-    elif user=="paper":
-        if computer=="scissor":
-            print('\n')
-            print("You lose!")
-            break
-        else:
-            print('\n')
-            print("You win!")
-    elif user=="scissor":
-        if computer=="rock":
-            print('\n')
-            print("You lose!")
-            break
-        else:
-            print('\n')
-            print("You win!")
+from random import randint
+while True:
+    lst = ["rock","paper","scissor","rock"]
+    user = input("Choose: \n")
+    cpu = lst[randint(0,3)]
+    if user not in lst:
+        print("Invalid Move")
+        continue
+    print("Computer chooses:",cpu.upper())
+    if cpu == user:
+        print("DRAW")
     else:
-        print("Invalid input. Please choose rock, paper, or scissor.")
-    print('\n')
-    play_again = input("Do you want to play again? (y/n) : ")
-    if play_again!="y":
-        break
+        print("You Loss") if lst[lst.index(user)+1] == cpu else print("You win") 
+    if input("play again (y) or exit (n)") == "n": break
