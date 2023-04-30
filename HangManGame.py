@@ -1,41 +1,66 @@
-import random
-words = ["update","battery","low","population","character","cultural",
-         "flash","at","admire","crack","code","amputate","spirit","urine",
-         "me","fairy","mystery","stir","visible","remember","computing","by"
-         ,"boy","market","height","undertake","cigarette","issue","ritual","pottery"
-         ,"cold","reform","education","hierarchy","abbey","science","vein","anger"
-         ,"abundant","hospital","fountain","crash","lamb","hardship","lease","shake"
-         ,"soar","harvest","abstract","obese"]
+from random import choice
 
-word = random.choice(words)
-temp = list(word)
-random.shuffle(temp)
-print("Missed Letters:",end='')
-for i in temp:
-    print(i + " ",end='')
-print()
-missted_word = word
-miss_list = []
-for i in range(len(word)):
-    if((i+2) %2 == 0):
-        missted_word = missted_word.replace(word[i],'_')
-        miss_list.append(word[i])
-print(missted_word)
-for i in range(1,11):
-
-    user_input = input("Enter your letter:")
-    if(user_input in miss_list):
-        miss_list.remove(user_input)
-        missted_word = word
-        for i in miss_list:
-            missted_word = missted_word.replace(i,"_")
-        print(missted_word)
-        print("Congrulations, Your Letter is Matched")
-        if(missted_word == word):
-            break
+def print_man(i,correct,letter):
+    global lst
+    global right_word
+    lst.append(letter)
+    h = chr(0x203E)*3
+    man = {0: f" +---+\n O   |\n     |\n     |\n    ___\n    {h}",
+        1: f" +---+\n O   |\n |   |\n     |\n    ___\n    {h}",
+        2: f" +---+\n O   |\n/|   |\n     |\n    ___\n    {h}",
+        3: f" +---+\n O   |\n/|\  |\n     |\n    ___\n    {h}",
+        4: f" +---+\n O   |\n/|\  |\n/    |\n    ___\n    {h}",
+        5: f" +---+\n O   |\n/|\  |\n/ \  |\n    ___\n    {h}"
+    }
+    print(man[i])
+    print("Missed letters:",*lst)
+    a=""
+    if i==5:
+        print(f"You are ran out of guesses\nAfter 6 missed guesses and {correct} correct guesses, right word is {right_word}")
+        a = input("Would you like to play again (y)es or (n)o:\n")
+        if a == "y":
+            return 0,0
+        else:
+            return 6,correct
     else:
-        print("Sorry, Your Letter is wrong, Chances Left:", 10-i)
-if(missted_word == word):
-    print("You Won the Game")
-else:
-    print("You Loose the Game")
+        return i+1,correct
+
+def choose_word():
+    word_s = ["fox","mouse","watch","chain","earth","ear"]
+    word_dsp = {"fox":["f","_","x"],"mouse":["m","_","u","_","e"],"watch":["w","_","t","_","h"],
+                "chain":["c","_","a","_","n"],"earth":["e","_","r","_","h"],"ear":["e","_","r"]}
+    word = "".join(choice(word_s))
+    return word,word_dsp[word]
+
+def right_guess(b):
+    global right_word
+    global dsp_guess
+    ct=0
+    for i in range (len(right_word)):
+        if b==right_word[i]:
+            ct=i
+            dsp_guess[ct]=right_word[ct]
+
+lst=[]
+w_try = 0
+r_try = 0
+right_word,dsp_guess = choose_word()
+while w_try<6:
+    
+    print(*dsp_guess)
+    user = input("Guess the letter: ")
+    print()
+    if user in right_word:
+        r_try+=1
+        right_guess(user)
+    else:
+        w_try,r_try = print_man(w_try,r_try,user)
+        right_word,dsp_guess=choose_word()
+        lst.clear()
+    if dsp_guess == list(right_word):
+        print(f"You guessed the word {right_word} correctly After {w_try} missed guesses and {r_try} correct guesses")
+        if input("Would you like to play again (y)es or (n)o:\n").lower() == "y":
+            w_try,r_try=0,0
+            right_word,dsp_guess = choose_word()
+        else: 
+            break
